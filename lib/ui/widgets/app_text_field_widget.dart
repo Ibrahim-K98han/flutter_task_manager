@@ -1,0 +1,28 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
+
+class AppTextFieldWidget extends StatelessWidget {
+  const AppTextFieldWidget(
+      {super.key,
+      required this.hintText,
+      required this.controller,
+      this.obscureText});
+  final String hintText;
+  final TextEditingController controller;
+  final bool? obscureText;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText ?? false,
+      decoration: InputDecoration(
+          fillColor: Colors.white,
+          hintText: hintText,
+          filled: true,
+          border: const OutlineInputBorder(borderSide: BorderSide.none)),
+    );
+  }
+}
