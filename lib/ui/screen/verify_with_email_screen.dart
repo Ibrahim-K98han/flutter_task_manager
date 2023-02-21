@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_task_manager/ui/screen/otp_verification_screen.dart';
 
 import '../utils/text_style.dart';
 import '../widgets/app_elevated_button.dart';
@@ -47,7 +48,9 @@ class _VerifyWithEmailScreenState extends State<VerifyWithEmailScreen> {
                 ),
                 AppElevatedButton(
                     child: const Icon(Icons.arrow_circle_right_outlined),
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const OtpVerificationScreen()));
+                    }),
                 const SizedBox(
                   height: 24,
                 ),
