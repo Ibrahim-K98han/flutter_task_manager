@@ -3,7 +3,8 @@ import 'package:flutter_task_manager/ui/screen/cancel_task_screen.dart';
 import 'package:flutter_task_manager/ui/screen/completed_task_screen.dart';
 import 'package:flutter_task_manager/ui/screen/inprogress_task_screen.dart';
 import 'package:flutter_task_manager/ui/screen/new_task_screen.dart';
-import 'package:flutter_task_manager/ui/widgets/screen_background_widget.dart';
+
+import '../widgets/user_profile_widget.dart';
 
 class MainBottomNavbar extends StatefulWidget {
   const MainBottomNavbar({Key? key}) : super(key: key);
@@ -13,35 +14,39 @@ class MainBottomNavbar extends StatefulWidget {
 }
 
 class _MainBottomNavbarState extends State<MainBottomNavbar> {
-  int _seletedScreen = 0;
-  final List<Widget> _screens = const[
-     NewTaskScreen(),
-     CompletedTaskScreen(),
-     CancelTaskScreen(),
-     InProgressTaskScreen()
+  int _selectedScreen = 0;
+  final List<Widget> _screens = const [
+    NewTaskScreen(),
+    CompletedTaskScreen(),
+    CancelTaskScreen(),
+    InProgressTaskScreen()
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ScreenBackground(
-        child: _screens[_seletedScreen],
+      body: SafeArea(
+        child: Column(
+          children: [
+           const UserProfileWidget(),
+            Expanded(child: _screens[_selectedScreen]),
+          ],
         ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.green,
         unselectedItemColor: Colors.black38,
         backgroundColor: Colors.white,
         showUnselectedLabels: true,
-        onTap: (index){
-          _seletedScreen = index;
-          setState(() {
-
-          });
-
+        onTap: (index) {
+          _selectedScreen = index;
+          setState(() {});
         },
         elevation: 4,
-        currentIndex: _seletedScreen ,
+        currentIndex: _selectedScreen,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.new_label_outlined), label: 'New'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.new_label_outlined), label: 'New'),
           BottomNavigationBarItem(icon: Icon(Icons.done), label: 'Completed'),
           BottomNavigationBarItem(icon: Icon(Icons.close), label: 'Cancelled'),
           BottomNavigationBarItem(icon: Icon(Icons.ac_unit), label: 'Progress'),
@@ -50,3 +55,4 @@ class _MainBottomNavbarState extends State<MainBottomNavbar> {
     );
   }
 }
+
