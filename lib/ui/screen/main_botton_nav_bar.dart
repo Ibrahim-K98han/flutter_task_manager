@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_manager/ui/screen/add_new_task_screen.dart';
 import 'package:flutter_task_manager/ui/screen/cancel_task_screen.dart';
 import 'package:flutter_task_manager/ui/screen/completed_task_screen.dart';
 import 'package:flutter_task_manager/ui/screen/inprogress_task_screen.dart';
@@ -32,6 +33,13 @@ class _MainBottomNavbarState extends State<MainBottomNavbar> {
             Expanded(child: _screens[_selectedScreen]),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>const AddNewTaskScreen()));
+        },
+        backgroundColor: Colors.green,
+        child: const Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.green,
