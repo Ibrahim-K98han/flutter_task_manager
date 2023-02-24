@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_task_manager/ui/screen/main_botton_nav_bar.dart';
 import 'package:flutter_task_manager/ui/screen/sign_up_screen.dart';
 import 'package:flutter_task_manager/ui/screen/verify_with_email_screen.dart';
 
@@ -48,7 +49,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 16,
               ),
               AppElevatedButton(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                      builder: (context) => const MainBottomNavbar()), (
+                      route) => false);
+                },
                 child: const Icon(Icons.arrow_circle_right_outlined),
               ),
               const SizedBox(
@@ -62,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    const VerifyWithEmailScreen()));
+                                const VerifyWithEmailScreen()));
                       },
                       child: const Text(
                         'Forgot Password?',
