@@ -43,7 +43,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: 5,
+              itemCount: 20,
               itemBuilder: (context, index){
                 return TaskListItem(
                   type: 'New',
