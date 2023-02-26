@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_task_manager/data/network_utils.dart';
+import 'package:flutter_task_manager/data/urls.dart';
 
 import '../utils/snackbar_message.dart';
 import '../utils/text_style.dart';
@@ -118,7 +119,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {
                             final result = await NetworkUtils().postMethod(
-                                'https://task.teamrabbil.com/api/v1/registration',
+                              Urls.registrationUrl,
                                 body: {
                                   'email': emailEtController.text.trim(),
                                   'mobile': mobileEtController.text.trim(),
