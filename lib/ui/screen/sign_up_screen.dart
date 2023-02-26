@@ -24,6 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController mobileEtController = TextEditingController();
   final TextEditingController passwordEtController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -114,9 +115,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(
                       height: 20,
                     ),
+                    _isLoading ? CircularProgressIndicator() :
                     AppElevatedButton(
                         child: const Icon(Icons.arrow_circle_right_outlined),
                         onTap: () async {
+                          setState(() {
+                            _isLoading = true;
+                          });
                           if (_formKey.currentState!.validate()) {
                             final result = await NetworkUtils().postMethod(
                               Urls.registrationUrl,
@@ -142,6 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   'Registration failed try again', true);
                             }
                           }
+                          Navigator.pop(context);
                         }),
                     const SizedBox(
                       height: 16,

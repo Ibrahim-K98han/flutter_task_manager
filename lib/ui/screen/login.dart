@@ -24,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailEtController = TextEditingController();
   final TextEditingController _passwordEtController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -71,8 +72,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 16,
                 ),
+                _isLoading ? CircularProgressIndicator() :
                 AppElevatedButton(
                   onTap: () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
                     if (_formKey.currentState!.validate()) {
                       final result = await NetworkUtils()
                           .postMethod(
@@ -93,6 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             (route) => false);
                       }
                     }
+                    //Navigator.pop(context);
                   },
                   child: const Icon(Icons.arrow_circle_right_outlined),
                 ),
