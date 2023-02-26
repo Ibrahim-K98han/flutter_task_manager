@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_task_manager/data/network_utils.dart';
 
+import '../utils/snackbar_message.dart';
 import '../utils/text_style.dart';
 import '../widgets/app_elevated_button.dart';
 import '../widgets/app_text_field_widget.dart';
@@ -15,6 +17,13 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController emailEtController = TextEditingController();
+  final TextEditingController firstNameEtController = TextEditingController();
+  final TextEditingController lastNameEtController = TextEditingController();
+  final TextEditingController mobileEtController = TextEditingController();
+  final TextEditingController passwordEtController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,67 +32,135 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(24),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 32,
-                  ),
-                  Text(
-                    'Join with us',
-                    style: screenTitleTextStyle,
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  AppTextFieldWidget(
-                      hintText: 'Email', controller: TextEditingController()),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  AppTextFieldWidget(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 32,
+                    ),
+                    Text(
+                      'Join with us',
+                      style: screenTitleTextStyle,
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    AppTextFieldWidget(
+                      hintText: 'Email',
+                      controller: emailEtController,
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Enter your email';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    AppTextFieldWidget(
                       hintText: 'First Name',
-                      controller: TextEditingController()),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  AppTextFieldWidget(
+                      controller: firstNameEtController,
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Enter your First Name';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    AppTextFieldWidget(
                       hintText: 'Last Name',
-                      controller: TextEditingController()),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  AppTextFieldWidget(
-                      hintText: 'Mobile', controller: TextEditingController()),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  AppTextFieldWidget(
+                      controller: lastNameEtController,
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Enter your Last Name';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    AppTextFieldWidget(
+                      keyboardType: TextInputType.number,
+                      hintText: 'Mobile',
+                      controller: mobileEtController,
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Enter your Mobile';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    AppTextFieldWidget(
                       hintText: 'Password',
-                      controller: TextEditingController()),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  AppElevatedButton(
-                      child: const Icon(Icons.arrow_circle_right_outlined),
-                      onTap: () {}),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("Have Account ?"),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text(
-                            'Sign In',
-                            style: TextStyle(color: Colors.green),
-                          ))
-                    ],
-                  )
-                ],
+                      controller: passwordEtController,
+                      validator: (value) {
+                        if ((value?.isEmpty ?? true) &&
+                            ((value?.length ?? 0) < 6)) {
+                          return 'Enter Password more than 6 letter';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    AppElevatedButton(
+                        child: const Icon(Icons.arrow_circle_right_outlined),
+                        onTap: () async {
+                          if (_formKey.currentState!.validate()) {
+                            final result = await NetworkUtils().postMethod(
+                                'https://task.teamrabbil.com/api/v1/registration',
+                                body: {
+                                  'email': emailEtController.text.trim(),
+                                  'mobile': mobileEtController.text.trim(),
+                                  'password': passwordEtController.text,
+                                  'firstName':
+                                      firstNameEtController.text.trim(),
+                                  'lastName': lastNameEtController.text.trim()
+                                });
+                            if (result != null &&
+                                result['status'] == 'success') {
+                              emailEtController.clear();
+                              mobileEtController.clear();
+                              passwordEtController.clear();
+                              firstNameEtController.clear();
+                              lastNameEtController.clear();
+                              showSnackBarMessage(
+                                  context, 'Registration Successfull');
+                            } else {
+                              showSnackBarMessage(context,
+                                  'Registration failed try again', true);
+                            }
+                          }
+                        }),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("Have Account ?"),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text(
+                              'Sign In',
+                              style: TextStyle(color: Colors.green),
+                            ))
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
