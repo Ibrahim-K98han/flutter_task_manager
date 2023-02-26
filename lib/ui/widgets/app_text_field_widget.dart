@@ -19,7 +19,7 @@ class AppTextFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      keyboardType: TextInputType.number,
+      keyboardType: keyboardType,
       controller: controller,
       obscureText: obscureText ?? false,
       maxLines: maxLines ?? 1,
