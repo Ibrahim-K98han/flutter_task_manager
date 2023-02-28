@@ -23,13 +23,15 @@ class NetworkUtils {
   }
 
   //post request
-  Future<dynamic> postMethod(String url, {Map<String, String>?body, VoidCallback? onUnAuthorize}) async {
+  Future<dynamic> postMethod(String url, {Map<String, String>?body, VoidCallback? onUnAuthorize, String? token}) async {
     try {
       final http.Response response = await http.post(Uri.parse(url),
           headers: {
-            'Content-type':'application/json'
+            'Content-type':'application/json',
+            'token': token ?? ''
           },
           body: jsonEncode(body));
+      print(response.body);
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else if (response.statusCode == 401) {
