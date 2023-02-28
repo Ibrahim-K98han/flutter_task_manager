@@ -115,14 +115,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    _isLoading ? CircularProgressIndicator() :
+                    if(_isLoading)
+                      Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.green,
+                        ),
+                      )
+                    else
                     AppElevatedButton(
                         child: const Icon(Icons.arrow_circle_right_outlined),
                         onTap: () async {
-                          setState(() {
-                            _isLoading = true;
-                          });
                           if (_formKey.currentState!.validate()) {
+                            _isLoading = true;
+                            setState(() {
+
+                            });
                             final result = await NetworkUtils().postMethod(
                               Urls.registrationUrl,
                                 body: {
@@ -133,6 +140,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       firstNameEtController.text.trim(),
                                   'lastName': lastNameEtController.text.trim()
                                 });
+                            _isLoading = false;
+                            setState(() {
+
+                            });
                             if (result != null &&
                                 result['status'] == 'success') {
                               emailEtController.clear();

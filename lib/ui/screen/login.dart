@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_task_manager/data/auth_util.dart';
 import 'package:flutter_task_manager/data/network_utils.dart';
 import 'package:flutter_task_manager/data/urls.dart';
 import 'package:flutter_task_manager/ui/screen/main_botton_nav_bar.dart';
 import 'package:flutter_task_manager/ui/screen/sign_up_screen.dart';
 import 'package:flutter_task_manager/ui/screen/verify_with_email_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/snackbar_message.dart';
 import '../utils/text_style.dart';
@@ -25,6 +27,44 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordEtController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+
+  Future<void> login() async {
+    _isLoading = true;
+    setState(() {
+
+    });
+    final result = await NetworkUtils()
+        .postMethod(
+        Urls.loginUrl,
+        body: {
+          'email': _emailEtController.text.trim(),
+          'password': _passwordEtController.text
+        },
+        onUnAuthorize: (){
+          showSnackBarMessage(context, 'Username or Password incorrect', true);
+        }
+    );
+    _isLoading = false;
+    setState(() {
+
+    });
+    if (result != null && result['status'] == 'success') {
+      await AuthUtils.saveUserData(
+          result['data']['firstName'],
+          result['data']['lastName'],
+          result['token'],
+          result['data']['photo'],
+          result['data']['mobile'],
+          result['data']['email'],
+      );
+
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const MainBottomNavbar()),
+              (route) => false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,31 +112,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 16,
                 ),
-                _isLoading ? CircularProgressIndicator() :
+                if(_isLoading)
+                  const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.green,
+                    ),
+                  )
+                else
                 AppElevatedButton(
                   onTap: () async {
-                    setState(() {
-                      _isLoading = true;
-                    });
                     if (_formKey.currentState!.validate()) {
-                      final result = await NetworkUtils()
-                          .postMethod(
-                        Urls.loginUrl,
-                        body: {
-                        'email': _emailEtController.text.trim(),
-                        'password': _passwordEtController.text
-                      },
-                        onUnAuthorize: (){
-                          showSnackBarMessage(context, 'Username or Password incorrect', true);
-                        }
-                      );
-                      if (result != null && result['status'] == 'success') {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MainBottomNavbar()),
-                            (route) => false);
-                      }
+                      login();
                     }
                     //Navigator.pop(context);
                   },

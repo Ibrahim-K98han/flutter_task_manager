@@ -39,6 +39,7 @@ dependencies:
   flutter_svg:
   pin_code_fields:
   http:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
