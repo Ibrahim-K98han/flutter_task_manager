@@ -23,7 +23,7 @@ class TaskListItem extends StatelessWidget {
     return Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-           side: BorderSide(color: Colors.green,width: 1)
+           side: const BorderSide(color: Colors.green,width: 1)
           ),
       elevation: 0,
       margin: const EdgeInsets.all(8),
@@ -71,13 +71,13 @@ class TaskListItem extends StatelessWidget {
                TextButton(
                  style: TextButton.styleFrom(
                    backgroundColor: Colors.green.shade50,
-                   minimumSize: Size(15, 15)
+                   minimumSize: const Size(15, 15)
                  ),
                    onPressed: onEditPress, child: Icon(Icons.edit,size: 20,color: Colors.green,)),
                 TextButton(
                     style: TextButton.styleFrom(
                         backgroundColor: Colors.red.shade50,
-                        minimumSize: Size(15, 15)
+                        minimumSize: const Size(15, 15)
                     ),
                     onPressed: onDeletePress, child: Icon(Icons.delete,size: 20,color: Colors.red,)
                 )
