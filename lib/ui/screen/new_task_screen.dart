@@ -96,6 +96,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                           onDeletePress: () {},
                           onEditPress: () {
                             showChangeTaskStatus(
+                              'New',
                                 newTaskModel.data?[index].sId ?? '', () {
                               getAllNewTask();
                             });

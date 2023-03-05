@@ -36,7 +36,8 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
     if (response != null) {
       completedTaskModel = TaskModel.fromJson(response);
     } else {
-      showSnackBarMessage(context, 'Unable to fetch completed task! try again', true);
+      showSnackBarMessage(
+          context, 'Unable to fetch completed task! try again', true);
     }
     inProgress = false;
     setState(() {});
@@ -47,37 +48,39 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
     return ScreenBackground(
       child: Column(
         children: [
-
           Expanded(
             child: inProgress
                 ? const Center(
-              child: CircularProgressIndicator(),
-            )
+                    child: CircularProgressIndicator(),
+                  )
                 : RefreshIndicator(
-              onRefresh: () async {
-                getAllCompletedTask();
-              },
-              child: ListView.builder(
-                itemCount: completedTaskModel.data?.length ?? 0,
-                // reverse: true,
-                itemBuilder: (context, index) {
-                  return TaskListItem(
-                    type: 'Completed',
-                    date: completedTaskModel.data![index].createdDate ??
-                        'Unknown',
-                    description: completedTaskModel.data![index].description ??
-                        'Unknown',
-                    subject: completedTaskModel.data![index].title ?? 'Unknown',
-                    onDeletePress: () {},
-                    onEditPress: () {
-                      showChangeTaskStatus(completedTaskModel.data?[index].sId ?? '', () {
-                        getAllCompletedTask();
-                      });
+                    onRefresh: () async {
+                      getAllCompletedTask();
                     },
-                  );
-                },
-              ),
-            ),
+                    child: ListView.builder(
+                      itemCount: completedTaskModel.data?.length ?? 0,
+                      // reverse: true,
+                      itemBuilder: (context, index) {
+                        return TaskListItem(
+                          type: 'Completed',
+                          date: completedTaskModel.data![index].createdDate ??
+                              'Unknown',
+                          description:
+                              completedTaskModel.data![index].description ??
+                                  'Unknown',
+                          subject: completedTaskModel.data![index].title ??
+                              'Unknown',
+                          onDeletePress: () {},
+                          onEditPress: () {
+                            showChangeTaskStatus('Completed',
+                                completedTaskModel.data?[index].sId ?? '', () {
+                              getAllCompletedTask();
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ),
           )
         ],
       ),

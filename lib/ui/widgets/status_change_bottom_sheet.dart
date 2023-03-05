@@ -7,8 +7,8 @@ import '../../data/urls.dart';
 import '../utils/snackbar_message.dart';
 import 'app_elevated_button.dart';
 
-showChangeTaskStatus(String taskId, VoidCallback onTaskChangeCompleted) {
-  String groupTask = 'New';
+showChangeTaskStatus(String currentStatus ,String taskId, VoidCallback onTaskChangeCompleted) {
+  String statusValue = currentStatus;
   showModalBottomSheet(
       context: MyApp.globalKey.currentContext!,
       builder: (context) {
@@ -17,34 +17,34 @@ showChangeTaskStatus(String taskId, VoidCallback onTaskChangeCompleted) {
             children: [
               RadioListTile(
                   value: 'New',
-                  groupValue: groupTask,
+                  groupValue: statusValue,
                   title: const Text('New'),
                   onChanged: (state) {
-                    groupTask = state!;
+                    statusValue = state!;
                     changeState(() {});
                   }),
               RadioListTile(
                   value: 'Completed',
-                  groupValue: groupTask,
+                  groupValue: statusValue,
                   title: const Text('Completed'),
                   onChanged: (state) {
-                    groupTask = state!;
+                    statusValue = state!;
                     changeState(() {});
                   }),
               RadioListTile(
                   value: 'Cancelled',
-                  groupValue: groupTask,
+                  groupValue: statusValue,
                   title: const Text('Cancelled'),
                   onChanged: (state) {
-                    groupTask = state!;
+                    statusValue = state!;
                     changeState(() {});
                   }),
               RadioListTile(
                   value: 'Progress',
-                  groupValue: groupTask,
+                  groupValue: statusValue,
                   title: const Text('Progress'),
                   onChanged: (state) {
-                    groupTask = state!;
+                    statusValue = state!;
                     changeState(() {});
                   }),
               Padding(
@@ -53,7 +53,7 @@ showChangeTaskStatus(String taskId, VoidCallback onTaskChangeCompleted) {
                     child: const Text('Change Status'),
                     onTap: () async {
                       final response = await NetworkUtils().getMethod(
-                          Urls.changeTaskStatus(taskId, groupTask));
+                          Urls.changeTaskStatus(taskId, statusValue));
                       if (response != null) {
                         onTaskChangeCompleted();
                         Navigator.pop(context);
