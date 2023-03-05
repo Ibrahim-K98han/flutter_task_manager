@@ -7,6 +7,7 @@ import 'package:flutter_task_manager/ui/widgets/app_elevated_button.dart';
 import 'package:flutter_task_manager/ui/widgets/screen_background_widget.dart';
 
 import '../widgets/dashboard_item.dart';
+import '../widgets/status_change_bottom_sheet.dart';
 import '../widgets/task_list_item.dart';
 
 class NewTaskScreen extends StatefulWidget {
@@ -55,10 +56,10 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                 numberOfTasks: newTaskModel.data?.length ?? 0,
               )),
               Expanded(
-                  child: DashboardItem(
-                typeOfTask: 'Completed',
-                numberOfTasks: completedTaskModel.data?.length ?? 0,
-              ),
+                child: DashboardItem(
+                  typeOfTask: 'Completed',
+                  numberOfTasks: completedTaskModel.data?.length ?? 0,
+                ),
               ),
               Expanded(
                   child: DashboardItem(
@@ -95,7 +96,9 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                           onDeletePress: () {},
                           onEditPress: () {
                             showChangeTaskStatus(
-                                newTaskModel.data?[index].sId ?? '');
+                                newTaskModel.data?[index].sId ?? '', () {
+                              getAllNewTask();
+                            });
                           },
                         );
                       },
@@ -105,67 +108,5 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         ],
       ),
     );
-  }
-
-  showChangeTaskStatus(String taskId) {
-    String groupTask = 'New';
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return StatefulBuilder(builder: (context, changeState) {
-            return Column(
-              children: [
-                RadioListTile(
-                    value: 'New',
-                    groupValue: groupTask,
-                    title: const Text('New'),
-                    onChanged: (state) {
-                      groupTask = state!;
-                      changeState(() {});
-                    }),
-                RadioListTile(
-                    value: 'Completed',
-                    groupValue: groupTask,
-                    title: const Text('Completed'),
-                    onChanged: (state) {
-                      groupTask = state!;
-                      changeState(() {});
-                    }),
-                RadioListTile(
-                    value: 'Cancelled',
-                    groupValue: groupTask,
-                    title: const Text('Cancelled'),
-                    onChanged: (state) {
-                      groupTask = state!;
-                      changeState(() {});
-                    }),
-                RadioListTile(
-                    value: 'Progress',
-                    groupValue: groupTask,
-                    title: const Text('Progress'),
-                    onChanged: (state) {
-                      groupTask = state!;
-                      changeState(() {});
-                    }),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: AppElevatedButton(
-                      child: const Text('Change Status'),
-                      onTap: () async {
-                        final response = await NetworkUtils().getMethod(
-                            Urls.changeTaskStatus(taskId, groupTask));
-                        if (response != null) {
-                          getAllNewTask();
-                          Navigator.pop(context);
-                        } else {
-                          showSnackBarMessage(
-                              context, 'Status change failed! try again', true);
-                        }
-                      }),
-                )
-              ],
-            );
-          });
-        });
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/ui/widgets/screen_background_widget.dart';
+import 'package:flutter_task_manager/ui/widgets/status_change_bottom_sheet.dart';
 
 import '../../data/models/task_model.dart';
 import '../../data/network_utils.dart';
@@ -69,6 +70,9 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
                     subject: completedTaskModel.data![index].title ?? 'Unknown',
                     onDeletePress: () {},
                     onEditPress: () {
+                      showChangeTaskStatus(completedTaskModel.data?[index].sId ?? '', () {
+                        getAllCompletedTask();
+                      });
                     },
                   );
                 },
