@@ -3,6 +3,7 @@ import 'package:flutter_task_manager/data/models/task_model.dart';
 import 'package:flutter_task_manager/data/network_utils.dart';
 import 'package:flutter_task_manager/data/urls.dart';
 import 'package:flutter_task_manager/ui/utils/snackbar_message.dart';
+import 'package:flutter_task_manager/ui/widgets/app_elevated_button.dart';
 import 'package:flutter_task_manager/ui/widgets/screen_background_widget.dart';
 
 import '../widgets/dashboard_item.dart';
@@ -17,6 +18,7 @@ class NewTaskScreen extends StatefulWidget {
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
   TaskModel newTaskModel = TaskModel();
+  TaskModel completedTaskModel = TaskModel();
   bool inProgress = false;
 
   @override
@@ -50,12 +52,12 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
               Expanded(
                   child: DashboardItem(
                 typeOfTask: 'New',
-                numberOfTasks: newTaskModel.data!.length ?? 0,
+                numberOfTasks: newTaskModel.data?.length ?? 0,
               )),
               Expanded(
                   child: DashboardItem(
                 typeOfTask: 'Completed',
-                numberOfTasks: 23,
+                numberOfTasks: completedTaskModel.data?.length ?? 0,
               )),
               Expanded(
                   child: DashboardItem(
@@ -89,8 +91,10 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                           description: newTaskModel.data![index].description ??
                               'Unknown',
                           subject: newTaskModel.data![index].title ?? 'Unknown',
-                          onEditPress: () {},
                           onDeletePress: () {},
+                          onEditPress: () {
+                            showChangeTaskStatus();
+                          },
                         );
                       },
                     ),
@@ -99,5 +103,53 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         ],
       ),
     );
+  }
+
+  showChangeTaskStatus() {
+    String groupTask = 'New';
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, changeState) {
+            return Column(
+              children: [
+                RadioListTile(
+                    value: 'New',
+                    groupValue: groupTask,
+                    title: const Text('New'),
+                    onChanged: (state) {
+                      groupTask = state!;
+                      changeState(() {});
+                    }),
+                RadioListTile(
+                    value: 'Completed',
+                    groupValue: groupTask,
+                    title: const Text('Completed'),
+                    onChanged: (state) {
+                      groupTask = state!;
+                      changeState(() {});
+                    }),
+                RadioListTile(
+                    value: 'Cancelled',
+                    groupValue: groupTask,
+                    title: const Text('Cancelled'),
+                    onChanged: (state) {
+                      groupTask = state!;
+                      changeState(() {});
+                    }),
+                RadioListTile(
+                    value: 'Progress',
+                    groupValue: groupTask,
+                    title: const Text('Progress'),
+                    onChanged: (state) {
+                      groupTask = state!;
+                      changeState(() {});
+                    }),
+                AppElevatedButton(
+                    child: const Text('Change Status'), onTap: () {})
+              ],
+            );
+          });
+        });
   }
 }
