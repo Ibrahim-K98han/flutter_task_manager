@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/data/models/task_model.dart';
 import 'package:flutter_task_manager/data/network_utils.dart';
@@ -28,19 +27,17 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
 
   Future<void> getAllNewTask() async {
     inProgress = true;
-    setState(() {
-
-    });
-    final response = await NetworkUtils().getMethod(Urls.newTaskUrl,);
+    setState(() {});
+    final response = await NetworkUtils().getMethod(
+      Urls.newTaskUrl,
+    );
     if (response != null) {
       newTaskModel = TaskModel.fromJson(response);
     } else {
-      showSnackBarMessage(context, 'Unable to fetch new task! try again',true);
+      showSnackBarMessage(context, 'Unable to fetch new task! try again', true);
     }
     inProgress = false;
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
@@ -49,7 +46,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       child: Column(
         children: [
           Row(
-            children:  [
+            children: [
               Expanded(
                   child: DashboardItem(
                 typeOfTask: 'New',
@@ -73,27 +70,31 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
             ],
           ),
           Expanded(
-            child: inProgress ? const Center(
-              child: CircularProgressIndicator(),
-            ) : RefreshIndicator(
-              onRefresh: ()async{
-                getAllNewTask();
-              },
-              child: ListView.builder(
-                itemCount: newTaskModel.data!.length ?? 0,
-                // reverse: true,
-                itemBuilder: (context, index) {
-                  return TaskListItem(
-                    type: 'New',
-                    date: newTaskModel.data![index].createdDate ?? 'Unknown',
-                    description: newTaskModel.data![index].description ?? 'Unknown',
-                    subject: newTaskModel.data![index].title ?? 'Unknown',
-                    onEditPress: () {},
-                    onDeletePress: () {},
-                  );
-                },
-              ),
-            ),
+            child: inProgress
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : RefreshIndicator(
+                    onRefresh: () async {
+                      getAllNewTask();
+                    },
+                    child: ListView.builder(
+                      itemCount: newTaskModel.data!.length ?? 0,
+                      // reverse: true,
+                      itemBuilder: (context, index) {
+                        return TaskListItem(
+                          type: 'New',
+                          date: newTaskModel.data![index].createdDate ??
+                              'Unknown',
+                          description: newTaskModel.data![index].description ??
+                              'Unknown',
+                          subject: newTaskModel.data![index].title ?? 'Unknown',
+                          onEditPress: () {},
+                          onDeletePress: () {},
+                        );
+                      },
+                    ),
+                  ),
           )
         ],
       ),

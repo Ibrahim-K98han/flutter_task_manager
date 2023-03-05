@@ -11,10 +11,13 @@ class NetworkUtils {
   //get request
   Future<dynamic> getMethod(String url, {VoidCallback? onUnAuthorize}) async {
     try {
-      final http.Response response = await http.get(Uri.parse(url),  headers: {
-        'Content-type': 'application/json',
-        'token': AuthUtils.token ?? ''
-      },);
+      final http.Response response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-type': 'application/json',
+          'token': AuthUtils.token ?? ''
+        },
+      );
       log(response.body);
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
@@ -33,8 +36,10 @@ class NetworkUtils {
   }
 
   //post request
-  Future<dynamic> postMethod(String url, {Map<String,
-      String>?body, VoidCallback? onUnAuthorize, String? token}) async {
+  Future<dynamic> postMethod(String url,
+      {Map<String, String>? body,
+      VoidCallback? onUnAuthorize,
+      String? token}) async {
     try {
       final http.Response response = await http.post(Uri.parse(url),
           headers: {
@@ -59,11 +64,11 @@ class NetworkUtils {
     }
   }
 
-  void moveToLogin() async{
+  void moveToLogin() async {
     await AuthUtils.clearData();
     Navigator.pushAndRemoveUntil(
-        MyApp.globalKey.currentContext!, MaterialPageRoute(builder: (context) => LoginScreen()), (
-        route) => false);
+        MyApp.globalKey.currentContext!,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+        (route) => false);
   }
-
 }
