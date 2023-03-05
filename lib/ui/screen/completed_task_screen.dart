@@ -5,6 +5,7 @@ import '../../data/models/task_model.dart';
 import '../../data/network_utils.dart';
 import '../../data/urls.dart';
 import '../utils/snackbar_message.dart';
+import '../widgets/dashboard_item.dart';
 import '../widgets/task_list_item.dart';
 
 class CompletedTaskScreen extends StatefulWidget {
@@ -16,6 +17,7 @@ class CompletedTaskScreen extends StatefulWidget {
 
 class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
   TaskModel completedTaskModel = TaskModel();
+  TaskModel newTaskModel = TaskModel();
   bool inProgress = false;
 
   @override
@@ -44,29 +46,33 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
     return ScreenBackground(
       child: Column(
         children: [
-          inProgress
-              ? const Center(
-            child: CircularProgressIndicator(),
-          )
-              : RefreshIndicator(
-            onRefresh: () async {
-              getAllCompletedTask();
-            },
-            child: ListView.builder(
-              itemCount: completedTaskModel.data!.length ?? 0,
-              // reverse: true,
-              itemBuilder: (context, index) {
-                return TaskListItem(
-                  type: 'Completed',
-                  date: completedTaskModel.data![index].createdDate ??
-                      'Unknown',
-                  description: completedTaskModel.data![index].description ??
-                      'Unknown',
-                  subject: completedTaskModel.data![index].title ?? 'Unknown',
-                  onEditPress: () {},
-                  onDeletePress: () {},
-                );
+
+          Expanded(
+            child: inProgress
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
+                : RefreshIndicator(
+              onRefresh: () async {
+                getAllCompletedTask();
               },
+              child: ListView.builder(
+                itemCount: completedTaskModel.data?.length ?? 0,
+                // reverse: true,
+                itemBuilder: (context, index) {
+                  return TaskListItem(
+                    type: 'Completed',
+                    date: completedTaskModel.data![index].createdDate ??
+                        'Unknown',
+                    description: completedTaskModel.data![index].description ??
+                        'Unknown',
+                    subject: completedTaskModel.data![index].title ?? 'Unknown',
+                    onDeletePress: () {},
+                    onEditPress: () {
+                    },
+                  );
+                },
+              ),
             ),
           )
         ],

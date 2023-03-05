@@ -58,7 +58,8 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                   child: DashboardItem(
                 typeOfTask: 'Completed',
                 numberOfTasks: completedTaskModel.data?.length ?? 0,
-              )),
+              ),
+              ),
               Expanded(
                   child: DashboardItem(
                 typeOfTask: 'Cancelled',
@@ -93,7 +94,8 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                           subject: newTaskModel.data![index].title ?? 'Unknown',
                           onDeletePress: () {},
                           onEditPress: () {
-                            showChangeTaskStatus();
+                            showChangeTaskStatus(
+                                newTaskModel.data?[index].sId ?? '');
                           },
                         );
                       },
@@ -105,7 +107,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     );
   }
 
-  showChangeTaskStatus() {
+  showChangeTaskStatus(String taskId) {
     String groupTask = 'New';
     showModalBottomSheet(
         context: context,
@@ -145,8 +147,22 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                       groupTask = state!;
                       changeState(() {});
                     }),
-                AppElevatedButton(
-                    child: const Text('Change Status'), onTap: () {})
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: AppElevatedButton(
+                      child: const Text('Change Status'),
+                      onTap: () async {
+                        final response = await NetworkUtils().getMethod(
+                            Urls.changeTaskStatus(taskId, groupTask));
+                        if (response != null) {
+                          getAllNewTask();
+                          Navigator.pop(context);
+                        } else {
+                          showSnackBarMessage(
+                              context, 'Status change failed! try again', true);
+                        }
+                      }),
+                )
               ],
             );
           });
