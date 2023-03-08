@@ -13,6 +13,13 @@ class UpdateProfileScreen extends StatefulWidget {
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
+
+  final TextEditingController _emailETController = TextEditingController();
+  final TextEditingController _firstNameETController = TextEditingController();
+  final TextEditingController _lastNameETController = TextEditingController();
+  final TextEditingController _mobileETController = TextEditingController();
+  final TextEditingController _passwordETController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +79,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         const SizedBox(
                           height: 8,
                         ),
-                        AppTextFieldWidget(hintText: 'Email', controller: TextEditingController()),
+                        AppTextFieldWidget(
+                            hintText: 'Email', controller: _emailETController
+                        ),
                         const SizedBox(
                           height: 8,
                         ),
