@@ -62,7 +62,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             pickedImage = await ImagePicker()
                                 .pickImage(source: ImageSource.gallery);
                             if (pickedImage != null) {
-                              // setState(() {});
+                              setState(() {});
                             }
                           },
                           child: Row(
