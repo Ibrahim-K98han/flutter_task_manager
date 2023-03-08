@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_manager/data/auth_util.dart';
 import 'package:flutter_task_manager/ui/utils/text_style.dart';
 import 'package:flutter_task_manager/ui/widgets/app_elevated_button.dart';
 import 'package:flutter_task_manager/ui/widgets/app_text_field_widget.dart';
@@ -19,6 +20,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController _lastNameETController = TextEditingController();
   final TextEditingController _mobileETController = TextEditingController();
   final TextEditingController _passwordETController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _emailETController.text = AuthUtils.email ?? '';
+    _firstNameETController.text = AuthUtils.firstName ?? '';
+    _lastNameETController.text = AuthUtils.lastName ?? '';
+     _mobileETController.text = AuthUtils.mobile ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +56,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           height: 16,
                         ),
                         InkWell(
-                          onTap: (){},
+                          onTap: (){
+
+                          },
                           child: Row(
                             children: [
                               Container(
@@ -81,26 +93,33 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         ),
                         AppTextFieldWidget(
                             hintText: 'Email', controller: _emailETController,
-                          readOnly: true,
+                            readOnly: true,
                         ),
                         const SizedBox(
                           height: 8,
                         ),
-                        AppTextFieldWidget(hintText: 'First Name', controller: TextEditingController()),
+                        AppTextFieldWidget(
+                            hintText: 'First Name', controller: _firstNameETController
+                        ),
                         const SizedBox(
                           height: 8,
                         ),
-                        AppTextFieldWidget(hintText: 'Last Name', controller: TextEditingController()),
+                        AppTextFieldWidget(
+                            hintText: 'Last Name', controller: _lastNameETController
+                        ),
                         const SizedBox(
                           height: 8,
                         ),
-                        AppTextFieldWidget(hintText: 'Mobile ', controller: TextEditingController()),
+                        AppTextFieldWidget(
+                            hintText: 'Mobile ', controller: _mobileETController,
+                        ),
                         const SizedBox(
                           height: 8,
                         ),
                         AppTextFieldWidget(hintText: 'Password',
                             obscureText: true,
-                            controller: TextEditingController()),
+                            controller: _passwordETController
+                        ),
                         const SizedBox(
                           height: 16,
                         ),
