@@ -80,7 +80,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           height: 8,
                         ),
                         AppTextFieldWidget(
-                            hintText: 'Email', controller: _emailETController
+                            hintText: 'Email', controller: _emailETController,
+                          readOnly: true,
                         ),
                         const SizedBox(
                           height: 8,
