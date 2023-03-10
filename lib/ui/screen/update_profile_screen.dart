@@ -49,14 +49,20 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     }
 
 
-    final result =
-        await NetworkUtils().postMethod(Urls.profileUpdateUrl, body: {
+    Map<String, String> bodyParams = {
       'firstName': _firstNameETController.text.trim(),
       'lastName': _lastNameETController.text.trim(),
       'mobile': _mobileETController.text.trim(),
-      'password': _passwordETController.text,
-          'photo': base64Image ?? ''
-    });
+
+      'photo': base64Image ?? ''
+    };
+
+    if(_passwordETController.text.isNotEmpty){
+      bodyParams['password'] = _passwordETController.text;
+    }
+
+    final result =
+        await NetworkUtils().postMethod(Urls.profileUpdateUrl, body: bodyParams);
     if (result != null && result['status'] == 'success') {
       showSnackBarMessage(context, 'Profile Data Updte');
     }
