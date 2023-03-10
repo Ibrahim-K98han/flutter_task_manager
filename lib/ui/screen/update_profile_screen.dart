@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/data/auth_util.dart';
 import 'package:flutter_task_manager/data/network_utils.dart';
@@ -27,6 +29,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   XFile? pickedImage;
+  String? base64Image;
 
   @override
   void initState() {
@@ -38,7 +41,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
 
   void updateProfile() async {
-
+    if(pickedImage != null){
+      List<int> imageBytes = await pickedImage!.readAsBytes();
+      print(imageBytes);
+      base64Image = base64Encode(imageBytes);
+      print(base64Image);
+    }
 
 
     final result =
@@ -47,7 +55,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       'lastName': _lastNameETController.text.trim(),
       'mobile': _mobileETController.text.trim(),
       'password': _passwordETController.text,
-          'photo':
+          'photo': base64Image ?? ''
     });
     if (result != null && result['status'] == 'success') {
       showSnackBarMessage(context, 'Profile Data Updte');
