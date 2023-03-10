@@ -21,6 +21,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController _mobileETController = TextEditingController();
   final TextEditingController _passwordETController = TextEditingController();
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   XFile? pickedImage;
 
   @override
@@ -44,97 +46,137 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        Text(
-                          'Update Profile',
-                          style: screenTitleTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            _getImage();
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(16),
-                                decoration: const BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(8),
-                                        bottomLeft: Radius.circular(8))),
-                                child: const Text(
-                                  'Photo',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 24,
+                          ),
+                          Text(
+                            'Update Profile',
+                            style: screenTitleTextStyle,
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              _getImage();
+                            },
+                            child: Row(
+                              children: [
+                                Container(
                                   padding: const EdgeInsets.all(16),
                                   decoration: const BoxDecoration(
-                                      color: Colors.white,
+                                      color: Colors.grey,
                                       borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(8),
-                                          bottomRight: Radius.circular(8))),
-                                  child: Text(
-                                    pickedImage?.name ?? '',
-                                    maxLines: 1,
-                                    style: const TextStyle(
-                                        overflow: TextOverflow.ellipsis),
+                                          topLeft: Radius.circular(8),
+                                          bottomLeft: Radius.circular(8))),
+                                  child: const Text(
+                                    'Photo',
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(8),
+                                            bottomRight: Radius.circular(8))),
+                                    child: Text(
+                                      pickedImage?.name ?? '',
+                                      maxLines: 1,
+                                      style: const TextStyle(
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        AppTextFieldWidget(
-                          hintText: 'Email',
-                          controller: _emailETController,
-                          readOnly: true,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        AppTextFieldWidget(
-                            hintText: 'First Name',
-                            controller: _firstNameETController),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        AppTextFieldWidget(
-                            hintText: 'Last Name',
-                            controller: _lastNameETController),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        AppTextFieldWidget(
-                          hintText: 'Mobile ',
-                          controller: _mobileETController,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        AppTextFieldWidget(
-                            hintText: 'Password',
-                            obscureText: true,
-                            controller: _passwordETController),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        AppElevatedButton(
-                            child: Icon(Icons.arrow_circle_right_outlined),
-                            onTap: () {})
-                      ],
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          AppTextFieldWidget(
+                            hintText: 'Email',
+                            controller: _emailETController,
+                            readOnly: true,
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return 'Enter your valid email';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          AppTextFieldWidget(
+                              hintText: 'First Name',
+                              controller: _firstNameETController,
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return 'Enter your First Name';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          AppTextFieldWidget(
+                              hintText: 'Last Name',
+                              controller: _lastNameETController,
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return 'Enter your Last Name';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          AppTextFieldWidget(
+                            hintText: 'Mobile ',
+                            controller: _mobileETController,
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return 'Enter your valid mobile';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          AppTextFieldWidget(
+                              hintText: 'Password',
+                              obscureText: true,
+                              controller: _passwordETController,
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return 'Enter your valid password';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          AppElevatedButton(
+                              child: Icon(Icons.arrow_circle_right_outlined),
+                              onTap: () {
+                                if (_formKey.currentState!.validate()) {
+                                  //login();
+                                }
+                              })
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -147,29 +189,39 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
 
   Future<void> _getImage() async {
-    showDialog(context: context, builder: (context){
-      return AlertDialog(
-        title: Text('Picked Image from'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              onTap: (){},
-              leading: Icon(Icons.photo_camera),
-              title: Text('Camera'),
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Picked Image from'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  onTap: () async {
+                    pickedImage = await ImagePicker()
+                        .pickImage(source: ImageSource.camera);
+                    if (pickedImage != null) {
+                      setState(() {});
+                    }
+                  },
+                  leading: const Icon(Icons.photo_camera),
+                  title: const Text('Camera'),
+                ),
+                ListTile(
+                  onTap: () async {
+                    pickedImage = await ImagePicker()
+                        .pickImage(source: ImageSource.gallery);
+                    if (pickedImage != null) {
+                      setState(() {});
+                    }
+                  },
+                  leading: const Icon(Icons.photo),
+                  title: const Text('Gallery'),
+                )
+              ],
             ),
-            ListTile(
-              onTap: (){},
-              leading: Icon(Icons.photo),
-              title: Text('Gallery'),
-            )
-          ],
-        ),
-      );
-    });
-    pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedImage != null) {
-      setState(() {});
-    }
+          );
+        });
   }
 }
