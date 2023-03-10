@@ -93,7 +93,6 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                                   });
                                   final result = await NetworkUtils().postMethod(
                                     Urls.createNewTaskUrl,
-                                    token: AuthUtils.token,
                                     body: {
                                         "title":_subjectETController.text.trim(),
                                         "description":_descriptionETController.text.trim(),

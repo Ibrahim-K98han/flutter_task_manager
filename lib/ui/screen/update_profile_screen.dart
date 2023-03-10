@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/data/auth_util.dart';
+import 'package:flutter_task_manager/data/network_utils.dart';
+import 'package:flutter_task_manager/data/urls.dart';
+import 'package:flutter_task_manager/ui/utils/snackbar_message.dart';
 import 'package:flutter_task_manager/ui/utils/text_style.dart';
 import 'package:flutter_task_manager/ui/widgets/app_elevated_button.dart';
 import 'package:flutter_task_manager/ui/widgets/app_text_field_widget.dart';
@@ -32,6 +35,23 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     _firstNameETController.text = AuthUtils.firstName ?? '';
     _lastNameETController.text = AuthUtils.lastName ?? '';
     _mobileETController.text = AuthUtils.mobile ?? '';
+  }
+
+  void updateProfile() async {
+
+
+
+    final result =
+        await NetworkUtils().postMethod(Urls.profileUpdateUrl, body: {
+      'firstName': _firstNameETController.text.trim(),
+      'lastName': _lastNameETController.text.trim(),
+      'mobile': _mobileETController.text.trim(),
+      'password': _passwordETController.text,
+          'photo':
+    });
+    if (result != null && result['status'] == 'success') {
+      showSnackBarMessage(context, 'Profile Data Updte');
+    }
   }
 
   @override
@@ -116,8 +136,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             height: 8,
                           ),
                           AppTextFieldWidget(
-                              hintText: 'First Name',
-                              controller: _firstNameETController,
+                            hintText: 'First Name',
+                            controller: _firstNameETController,
                             validator: (value) {
                               if (value?.isEmpty ?? true) {
                                 return 'Enter your First Name';
@@ -129,8 +149,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             height: 8,
                           ),
                           AppTextFieldWidget(
-                              hintText: 'Last Name',
-                              controller: _lastNameETController,
+                            hintText: 'Last Name',
+                            controller: _lastNameETController,
                             validator: (value) {
                               if (value?.isEmpty ?? true) {
                                 return 'Enter your Last Name';
@@ -155,9 +175,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             height: 8,
                           ),
                           AppTextFieldWidget(
-                              hintText: 'Password',
-                              obscureText: true,
-                              controller: _passwordETController,
+                            hintText: 'Password',
+                            obscureText: true,
+                            controller: _passwordETController,
                             validator: (value) {
                               if (value?.isEmpty ?? true) {
                                 return 'Enter your valid password';
@@ -172,7 +192,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               child: Icon(Icons.arrow_circle_right_outlined),
                               onTap: () {
                                 if (_formKey.currentState!.validate()) {
-                                  //login();
+                                  updateProfile();
                                 }
                               })
                         ],
