@@ -59,6 +59,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         ),
                         InkWell(
                           onTap: () {
+
                             _getImage();
                           },
                           child: Row(
@@ -142,7 +143,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
 
   Future<void> _getImage() async {
-    pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       setState(() {});
     }
