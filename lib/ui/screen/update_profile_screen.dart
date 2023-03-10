@@ -59,7 +59,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         ),
                         InkWell(
                           onTap: () {
-
                             _getImage();
                           },
                           child: Row(
@@ -84,7 +83,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                       borderRadius: BorderRadius.only(
                                           topRight: Radius.circular(8),
                                           bottomRight: Radius.circular(8))),
-                                  child: Text(pickedImage?.name ?? ''),
+                                  child: Text(
+                                    pickedImage?.name ?? '',
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                        overflow: TextOverflow.ellipsis),
+                                  ),
                                 ),
                               ),
                             ],
@@ -143,6 +147,26 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
 
   Future<void> _getImage() async {
+    showDialog(context: context, builder: (context){
+      return AlertDialog(
+        title: Text('Picked Image from'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              onTap: (){},
+              leading: Icon(Icons.photo_camera),
+              title: Text('Camera'),
+            ),
+            ListTile(
+              onTap: (){},
+              leading: Icon(Icons.photo),
+              title: Text('Gallery'),
+            )
+          ],
+        ),
+      );
+    });
     pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       setState(() {});
