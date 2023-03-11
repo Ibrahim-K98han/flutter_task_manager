@@ -12,4 +12,7 @@ class Urls {
 
   static String recoverVerifyEmailUrl(String email) =>
       '$baseUrl/RecoverVerifyEmail/$email';
+
+  static String recoverVerifyOTPUrl(String email, String otp) =>
+      '$baseUrl/RecoverVerifyEmail/$email/$otp';
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_task_manager/data/network_utils.dart';
+import 'package:flutter_task_manager/data/urls.dart';
 import 'package:flutter_task_manager/ui/screen/otp_verification_screen.dart';
+import 'package:flutter_task_manager/ui/utils/snackbar_message.dart';
 
 import '../utils/text_style.dart';
 import '../widgets/app_elevated_button.dart';
@@ -16,6 +19,8 @@ class VerifyWithEmailScreen extends StatefulWidget {
 }
 
 class _VerifyWithEmailScreenState extends State<VerifyWithEmailScreen> {
+  final TextEditingController _emailETController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,15 +46,33 @@ class _VerifyWithEmailScreenState extends State<VerifyWithEmailScreen> {
                   height: 24,
                 ),
                 AppTextFieldWidget(
-                    hintText: 'Email Address',
-                    controller: TextEditingController()),
+                    hintText: 'Email Address', controller: _emailETController),
                 const SizedBox(
                   height: 24,
                 ),
                 AppElevatedButton(
                     child: const Icon(Icons.arrow_circle_right_outlined),
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const OtpVerificationScreen()));
+                    onTap: () async {
+                      final response = await NetworkUtils().getMethod(
+                          Urls.recoverVerifyEmailUrl(
+                              _emailETController.text.trim()));
+                      if (response != null && response['status'] == 'success') {
+                        if (mounted) {
+                          showSnackBarMessage(
+                              context, 'OTP sent to the email address');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OtpVerificationScreen(
+                                        email: _emailETController.text.trim(),
+                                      )));
+                        }
+                      } else {
+                        if (mounted) {
+                          showSnackBarMessage(
+                              context, 'OTP Sent failed try again...', true);
+                        }
+                      }
                     }),
                 const SizedBox(
                   height: 24,

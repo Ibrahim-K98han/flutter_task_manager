@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_manager/data/network_utils.dart';
+import 'package:flutter_task_manager/data/urls.dart';
 import 'package:flutter_task_manager/ui/screen/login.dart';
 import 'package:flutter_task_manager/ui/screen/reset_password_screen.dart';
+import 'package:flutter_task_manager/ui/utils/snackbar_message.dart';
 import 'package:flutter_task_manager/ui/widgets/app_elevated_button.dart';
 import 'package:flutter_task_manager/ui/widgets/screen_background_widget.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -8,13 +11,18 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import '../utils/text_style.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
-  const OtpVerificationScreen({Key? key}) : super(key: key);
+  final String email;
+
+  const OtpVerificationScreen({Key? key, required this.email})
+      : super(key: key);
 
   @override
   State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
 }
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
+  final TextEditingController _otpPinETController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +48,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   height: 24,
                 ),
                 PinCodeTextField(
+                  controller: _otpPinETController,
                   keyboardType: TextInputType.number,
                   appContext: context,
                   length: 6,
@@ -72,11 +81,32 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 ),
                 AppElevatedButton(
                     child: const Text('Verify'),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ResetPasswordScreen()));
+                    onTap: () async {
+                      final response = await NetworkUtils().getMethod(
+                          Urls.recoverVerifyOTPUrl(
+                              widget.email, _otpPinETController.text.trim()));
+                      if (response != null && response['status'] == 'success') {
+                        if (mounted) {
+                          showSnackBarMessage(
+                              context, 'OTP verification done!');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ResetPasswordScreen(
+                                email: widget.email,
+                                otp: _otpPinETController.text,
+                              ),
+                            ),
+                          );
+                        } else {
+                          if (mounted) {
+                            showSnackBarMessage(
+                                context,
+                                'OTP Verification failed ! Check your otp',
+                                true);
+                          }
+                        }
+                      }
                     }),
                 const SizedBox(
                   height: 16,
@@ -90,7 +120,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LoginScreen()),
+                                  builder: (context) => const LoginScreen()),
                               (route) => false);
                         },
                         child: const Text(
