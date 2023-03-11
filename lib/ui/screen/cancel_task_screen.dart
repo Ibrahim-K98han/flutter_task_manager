@@ -16,10 +16,15 @@ class CancelTaskScreen extends StatefulWidget {
 }
 
 class _CancelTaskScreenState extends State<CancelTaskScreen> {
-  TaskModel newTaskModel = TaskModel();
-  TaskModel completedTaskModel = TaskModel();
   TaskModel cancelTaskModel = TaskModel();
   bool inProgress = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getAllCancelTask();
+    cancelTaskModel;
+  }
 
   Future<void> getAllCancelTask() async {
     inProgress = true;
@@ -68,7 +73,7 @@ class _CancelTaskScreenState extends State<CancelTaskScreen> {
                         'Unknown',
                     onDeletePress: () {},
                     onEditPress: () {
-                      showChangeTaskStatus('Cancel',
+                      showChangeTaskStatus('Cancelled',
                           cancelTaskModel.data?[index].sId ?? '', () {
                             getAllCancelTask();
                           });

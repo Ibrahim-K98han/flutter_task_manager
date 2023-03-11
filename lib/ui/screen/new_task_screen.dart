@@ -21,6 +21,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
   TaskModel newTaskModel = TaskModel();
   TaskModel completedTaskModel = TaskModel();
   TaskModel cancelTaskModel = TaskModel();
+  TaskModel progressTaskModel = TaskModel();
   bool inProgress = false;
 
   @override
@@ -73,7 +74,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
               Expanded(
                   child: DashboardItem(
                 typeOfTask: 'In Progress',
-                numberOfTasks: 23,
+                numberOfTasks: progressTaskModel.data?.length ?? 0,
               )),
             ],
           ),

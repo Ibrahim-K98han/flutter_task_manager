@@ -6,6 +6,7 @@ class Urls {
   static String newTaskUrl = '$baseUrl/listTaskByStatus/New';
   static String completedTaskUrl = '$baseUrl/listTaskByStatus/Completed';
   static String cancelTaskUrl = '$baseUrl/listTaskByStatus/Cancelled';
+  static String progressTaskUrl = '$baseUrl/listTaskByStatus/Progress';
   static String profileUpdateUrl = '$baseUrl/profileUpdate';
   static String resetPasswordUrl = '$baseUrl/RecoverResetPass';
 
