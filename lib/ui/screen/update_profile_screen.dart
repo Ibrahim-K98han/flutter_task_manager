@@ -41,28 +41,26 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
 
   void updateProfile() async {
-    if(pickedImage != null){
+    if (pickedImage != null) {
       List<int> imageBytes = await pickedImage!.readAsBytes();
       print(imageBytes);
       base64Image = base64Encode(imageBytes);
       print(base64Image);
     }
 
-
     Map<String, String> bodyParams = {
       'firstName': _firstNameETController.text.trim(),
       'lastName': _lastNameETController.text.trim(),
       'mobile': _mobileETController.text.trim(),
-
       'photo': base64Image ?? ''
     };
 
-    if(_passwordETController.text.isNotEmpty){
+    if (_passwordETController.text.isNotEmpty) {
       bodyParams['password'] = _passwordETController.text;
     }
 
-    final result =
-        await NetworkUtils().postMethod(Urls.profileUpdateUrl, body: bodyParams);
+    final result = await NetworkUtils()
+        .postMethod(Urls.profileUpdateUrl, body: bodyParams);
     if (result != null && result['status'] == 'success') {
       showSnackBarMessage(context, 'Profile Data Updte');
     }
