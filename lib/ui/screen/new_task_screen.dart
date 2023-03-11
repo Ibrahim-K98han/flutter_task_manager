@@ -20,6 +20,7 @@ class NewTaskScreen extends StatefulWidget {
 class _NewTaskScreenState extends State<NewTaskScreen> {
   TaskModel newTaskModel = TaskModel();
   TaskModel completedTaskModel = TaskModel();
+  TaskModel cancelTaskModel = TaskModel();
   bool inProgress = false;
 
   @override
@@ -37,7 +38,10 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     if (response != null) {
       newTaskModel = TaskModel.fromJson(response);
     } else {
-      showSnackBarMessage(context, 'Unable to fetch new task! try again', true);
+      if (mounted) {
+        showSnackBarMessage(
+            context, 'Unable to fetch new task! try again', true);
+      }
     }
     inProgress = false;
     setState(() {});
@@ -64,7 +68,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
               Expanded(
                   child: DashboardItem(
                 typeOfTask: 'Cancelled',
-                numberOfTasks: 23,
+                numberOfTasks: cancelTaskModel.data?.length ?? 0,
               )),
               Expanded(
                   child: DashboardItem(
@@ -96,8 +100,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                           onDeletePress: () {},
                           onEditPress: () {
                             showChangeTaskStatus(
-                              'New',
-                                newTaskModel.data?[index].sId ?? '', () {
+                                'New', newTaskModel.data?[index].sId ?? '', () {
                               getAllNewTask();
                             });
                           },

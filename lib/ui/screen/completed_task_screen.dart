@@ -18,7 +18,7 @@ class CompletedTaskScreen extends StatefulWidget {
 
 class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
   TaskModel completedTaskModel = TaskModel();
-  TaskModel newTaskModel = TaskModel();
+
   bool inProgress = false;
 
   @override
@@ -36,8 +36,10 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
     if (response != null) {
       completedTaskModel = TaskModel.fromJson(response);
     } else {
-      showSnackBarMessage(
-          context, 'Unable to fetch completed task! try again', true);
+      if (mounted) {
+        showSnackBarMessage(
+            context, 'Unable to fetch completed task! try again', true);
+      }
     }
     inProgress = false;
     setState(() {});
