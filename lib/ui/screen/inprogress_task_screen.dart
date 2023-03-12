@@ -63,7 +63,7 @@ class _InProgressTaskScreenState extends State<InProgressTaskScreen> {
                 // reverse: true,
                 itemBuilder: (context, index) {
                   return TaskListItem(
-                    type: 'Completed',
+                    type: 'In Progress',
                     date: progressTaskModel.data![index].createdDate ??
                         'Unknown',
                     description:

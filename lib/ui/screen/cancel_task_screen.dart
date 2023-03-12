@@ -63,7 +63,7 @@ class _CancelTaskScreenState extends State<CancelTaskScreen> {
                 // reverse: true,
                 itemBuilder: (context, index) {
                   return TaskListItem(
-                    type: 'Completed',
+                    type: 'Cancel',
                     date: cancelTaskModel.data![index].createdDate ??
                         'Unknown',
                     description:

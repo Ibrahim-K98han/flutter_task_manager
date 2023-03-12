@@ -21,10 +21,9 @@ class TaskListItem extends StatelessWidget {
     String ca = 'Cancel';
     String p = 'In Progress';
     return Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-           side: const BorderSide(color: Colors.green,width: 1)
-          ),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: const BorderSide(color: Colors.green, width: 1)),
       elevation: 0,
       margin: const EdgeInsets.all(8),
       child: Padding(
@@ -65,22 +64,29 @@ class TaskListItem extends StatelessWidget {
                             : type == ca
                                 ? Colors.red
                                 : type == p
-                                    ? Colors.pink
+                                    ? Colors.pink.shade400
                                     : Colors.black),
                 const Spacer(),
-               TextButton(
-                 style: TextButton.styleFrom(
-                   backgroundColor: Colors.green.shade50,
-                   minimumSize: const Size(15, 15)
-                 ),
-                   onPressed: onEditPress, child: Icon(Icons.edit,size: 20,color: Colors.green,)),
+                TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: Colors.green.shade50,
+                        minimumSize: const Size(15, 15)),
+                    onPressed: onEditPress,
+                    child: Icon(
+                      Icons.edit,
+                      size: 20,
+                      color: Colors.green,
+                    )),
                 TextButton(
                     style: TextButton.styleFrom(
                         backgroundColor: Colors.red.shade50,
-                        minimumSize: const Size(15, 15)
-                    ),
-                    onPressed: onDeletePress, child: Icon(Icons.delete,size: 20,color: Colors.red,)
-                )
+                        minimumSize: const Size(15, 15)),
+                    onPressed: onDeletePress,
+                    child: Icon(
+                      Icons.delete,
+                      size: 20,
+                      color: Colors.red,
+                    ))
               ],
             )
           ],
