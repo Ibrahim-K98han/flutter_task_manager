@@ -10,7 +10,7 @@ import 'app_elevated_button.dart';
 showChangeTaskStatus(String currentStatus ,String taskId, VoidCallback onTaskChangeCompleted) {
   String statusValue = currentStatus;
   showModalBottomSheet(
-      context: MyApp.globalKey.currentContext!,
+      context: TaskManagerApp.globalKey.currentContext!,
       builder: (context) {
         return StatefulBuilder(builder: (context, changeState) {
           return Column(

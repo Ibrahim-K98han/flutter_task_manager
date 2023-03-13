@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_task_manager/pages/application_page.dart';
+import 'package:flutter_task_manager/task_manager2/ui/screen/splash_screen_2.dart';
 import 'package:flutter_task_manager/ui/screen/splash_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const TaskManagerApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class TaskManagerApp extends StatefulWidget {
+  const TaskManagerApp({super.key});
 
   static GlobalKey<NavigatorState> globalKey = GlobalKey<NavigatorState>();
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<TaskManagerApp> createState() => _TaskManagerAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _TaskManagerAppState extends State<TaskManagerApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: MyApp.globalKey,
+      navigatorKey: TaskManagerApp.globalKey,
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      //home: const SplashScreen(),
       //home:ApplicationPage()
+      home: const SplashScreen2(),
     );
   }
 }

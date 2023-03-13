@@ -55,7 +55,7 @@ class TaskListItem extends StatelessWidget {
                 Chip(
                     label: Text(
                       type,
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                     ),
                     backgroundColor: type == n
                         ? Colors.blue
@@ -72,7 +72,7 @@ class TaskListItem extends StatelessWidget {
                         backgroundColor: Colors.green.shade50,
                         minimumSize: const Size(15, 15)),
                     onPressed: onEditPress,
-                    child: Icon(
+                    child: const Icon(
                       Icons.edit,
                       size: 20,
                       color: Colors.green,
@@ -82,7 +82,7 @@ class TaskListItem extends StatelessWidget {
                         backgroundColor: Colors.red.shade50,
                         minimumSize: const Size(15, 15)),
                     onPressed: onDeletePress,
-                    child: Icon(
+                    child: const Icon(
                       Icons.delete,
                       size: 20,
                       color: Colors.red,

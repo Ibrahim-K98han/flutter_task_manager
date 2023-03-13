@@ -28,6 +28,9 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
   void initState() {
     super.initState();
     getAllNewTask();
+    getAllProgressTask();
+    getAllCancelTask();
+    getAllCompletedTask();
   }
 
   Future<void> getAllNewTask() async {
@@ -42,6 +45,60 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       if (mounted) {
         showSnackBarMessage(
             context, 'Unable to fetch new task! try again', true);
+      }
+    }
+    inProgress = false;
+    setState(() {});
+  }
+
+  Future<void> getAllProgressTask() async {
+    inProgress = true;
+    setState(() {});
+    final response = await NetworkUtils().getMethod(
+      Urls.progressTaskUrl,
+    );
+    if (response != null) {
+      progressTaskModel = TaskModel.fromJson(response);
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, 'Unable to fetch completed task! try again', true);
+      }
+    }
+    inProgress = false;
+    setState(() {});
+  }
+
+  Future<void> getAllCancelTask() async {
+    inProgress = true;
+    setState(() {});
+    final response = await NetworkUtils().getMethod(
+      Urls.cancelTaskUrl,
+    );
+    if (response != null) {
+      cancelTaskModel = TaskModel.fromJson(response);
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, 'Unable to fetch completed task! try again', true);
+      }
+    }
+    inProgress = false;
+    setState(() {});
+  }
+
+  Future<void> getAllCompletedTask() async {
+    inProgress = true;
+    setState(() {});
+    final response = await NetworkUtils().getMethod(
+      Urls.completedTaskUrl,
+    );
+    if (response != null) {
+      completedTaskModel = TaskModel.fromJson(response);
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, 'Unable to fetch completed task! try again', true);
       }
     }
     inProgress = false;
@@ -98,7 +155,9 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                           description: newTaskModel.data![index].description ??
                               'Unknown',
                           subject: newTaskModel.data![index].title ?? 'Unknown',
-                          onDeletePress: () {},
+                          onDeletePress: () {
+
+                          },
                           onEditPress: () {
                             showChangeTaskStatus(
                                 'New', newTaskModel.data?[index].sId ?? '', () {
