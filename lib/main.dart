@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_manager/task_manager2/ui/screen/login_2.dart';
 import 'package:flutter_task_manager/task_manager2/ui/screen/splash_screen_2.dart';
 import 'package:flutter_task_manager/ui/screen/splash_screen.dart';
 
@@ -23,7 +24,7 @@ class _TaskManagerAppState extends State<TaskManagerApp> {
       debugShowCheckedModeBanner: false,
       //home: const SplashScreen(),
       //home:ApplicationPage()
-      home: const SplashScreen2(),
+      home: const LoginScreen2(),
     );
   }
 }
